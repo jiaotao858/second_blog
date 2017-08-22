@@ -26,7 +26,7 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-md-4">
-                <label for="{{ form.name.id_for_label }}">名字：</label>
+                <label for="{{ form.name.id_for_label}}">名字：</label>
                 {{ form.name }}
                 {{ form.name.errors }}
             </div>
@@ -42,8 +42,8 @@
             </div>
             <div class="col-md-12">
                 <label for="{{ form.text.id_for_label }}">评论：</label>
-                <{{ form.text }}
-                <{{ form.text.errors }}
+                {{ form.text }}
+                {{ form.text.errors }}
 
                 <button type="submit" class="comment-btn">发表</button>
             </div>
