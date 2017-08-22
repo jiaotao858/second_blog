@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse
 from .models import Post,Category
+from comments.forms import CommentForm
 import markdown
 
 def index(request):
@@ -15,6 +16,15 @@ def detail(request,pk):
                                       'markdown.extensions.codehilite',
                                       'markdown.extensions.toc',
                                   ])
+    form = CommentForm()
+    #   获取这篇 post 下全部评论
+    comment_list = post.comment_set.all()
+
+    #   将文章、表单、以及文章下的评论列表作为模板变量传递给 detail.html，以便渲染数据
+    context = {'post':post,
+               'form':form,
+               'comment_list':comment_list
+                }
     return render(request,'blog/detail.html',context={'post':post})
 
 def archives(request,year,month):
