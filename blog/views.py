@@ -13,6 +13,10 @@ def index(request):
 def detail(request,pk):
     #   get_object_or_404有就获取，没有就报404
     post = get_object_or_404(Post,pk=pk)
+
+    #阅读量+1
+    post.increase_views()
+
     post.body = markdown.markdown(post.body,
                                   extensions=[
                                       'markdown.extensions.extra',
