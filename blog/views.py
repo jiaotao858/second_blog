@@ -4,11 +4,14 @@ from .models import Post,Category
 from comments.forms import CommentForm
 import markdown
 
+#   博客首页
 def index(request):
-    post_list = Post.objects.all().order_by('create_time')
+    post_list = Post.objects.all()
     return render(request,'blog/index.html',context={'post_list':post_list})
 
+#   博客详情页
 def detail(request,pk):
+    #   get_object_or_404有就获取，没有就报404
     post = get_object_or_404(Post,pk=pk)
     post.body = markdown.markdown(post.body,
                                   extensions=[
@@ -25,15 +28,17 @@ def detail(request,pk):
                'form':form,
                'comment_list':comment_list
                 }
-    return render(request,'blog/detail.html',context={'post':post})
+    return render(request,'blog/detail.html',context=context)
 
+#   博客归档
 def archives(request,year,month):
     post_list = Post.objects.filter(create_time__year=year,
                                     create_time__month=month
-                                    ).order_by('-create_time')
+                                    )
     return render(request,'blog/index.html',context={'post_list':post_list})
 
+#   博客分类
 def category(request,pk):
     cate = get_object_or_404(Category,pk=pk)
-    post_list = Post.objects.filter(category=cate).order_by('-create_time')
+    post_list = Post.objects.filter(category=cate)
     return render(request,'blog/index.html',context={'post_list':post_list})
