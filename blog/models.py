@@ -43,13 +43,13 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('blog:detail',kwargs={'pk':self.pk})
 
-    #复写save方法
+    # 复写save方法
     def save(self,*args,**kwargs):
         #如果没有填写再要
         if not self.excerpt:
             md = markdown.Markdown(extensions=[
-                'markdown.extension.extra',
-                'markdown.extensions.codelilite',
+                'markdown.extensions.extra',
+                'markdown.extensions.codelilite'
             ])
             #先将Markdown 文本渲染成HTML文本
             #strip_tag 去掉全部HTML标签
