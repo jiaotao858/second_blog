@@ -44,19 +44,19 @@ class Post(models.Model):
         return reverse('blog:detail',kwargs={'pk':self.pk})
 
     # 复写save方法
-    def save(self,*args,**kwargs):
-        #如果没有填写再要
-        if not self.excerpt:
-            md = markdown.Markdown(extensions=[
-                'markdown.extensions.extra',
-                'markdown.extensions.codelilite'
-            ])
-            #先将Markdown 文本渲染成HTML文本
-            #strip_tag 去掉全部HTML标签
-            #从文本中摘取54个字符赋excerpt
-            self.excerpt = strip_tags(md.convert(self.body))[:54]
-
-        super(Post,self).save(*args,**kwargs)
+    # def save(self,*args,**kwargs):
+    #     #如果没有填写再要
+    #     if not self.excerpt:
+    #         md = markdown.Markdown(extensions=[
+    #             'markdown.extensions.extra',
+    #             'markdown.extensions.codelilite'
+    #         ])
+    #         #先将Markdown 文本渲染成HTML文本
+    #         #strip_tag 去掉全部HTML标签
+    #         #从文本中摘取54个字符赋excerpt
+    #         self.excerpt = strip_tags(md.convert(self.body))[:54]
+    #
+    #     super(Post,self).save(*args,**kwargs)
 
     def increase_views(self):
         self.views += 1
