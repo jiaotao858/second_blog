@@ -28,7 +28,52 @@ class IndexView(ListView):
         page = context.get('page_obj')
         is_paginated = context.get('is_paginated')
 
+        #调用自己写的pagination_data方法，获得显示分页导航条需要的数据，见下方
         pagination_data = self.pagination_data(paginator,page,is_paginated)
+
+        #将分页导航条的模板变量更新到 context 中，注意 pagination_data 方法返回的也是一个字典
+        context.update(pagination_data)
+
+        #将跟新后的 context 返回，以便 ListView 使用这个字典中模板变量去渲染
+        #注意此时 context 字典中已有了显示分页导航条所需要的数据
+        return  context
+
+    def pagination_data(self,paginator,page,is_paginated):
+        # 如果没有分页，则无需显示分页导航条，不用任何分页导航条的数据，因此返回一个空的字典
+        if not is_paginated:
+            return {}
+
+        #当前页左边连续的页码，初始值为空
+        left = []
+
+        #当前页左边连续的页码，初始值为空
+        right = []
+
+        #标识第1页页码后是否需要显示省略号
+        left_has_more = False
+
+        #标识最后一页页码前是否需要显示省略号
+        right_has_more = False
+
+        #标识是否需要显示第 1 页的页码号
+        #因为如果当前页左边的连续页码中已经含有第1页的页码号，此时就无需在显示第1页的页码号
+        #其他情况下第1页的页码是始终需要显示的
+        #初始值为False
+        first = False
+
+        #标识是否需要显示最后一页的页码号
+        #需要此指示变量的理由和上面的相同
+        last = False
+
+        #获取用户当前请求的页码号
+        page_number = page.number
+
+        #获取分页后的总页数
+        total_pages = paginator.num_pages
+
+        #获取整个分页页码列表
+        page_range = paginator.page_range
+
 
   # 博客详情页：普通方法
 def detail(request,pk):
